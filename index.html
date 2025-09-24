@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maldynas — pradinis šablonas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <div class="title">Pasiruošimas Sutvirtinimo Sakramentui</div>
+          <div class="subtitle">Karmėlavos šv. Onos parapija</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container layout">
+    <aside class="sidebar" id="sidebar">
+      <ul class="menu" id="menu">
+        <!-- navigacija sugeneruota JavaScript pagal skyrius -->
+      </ul>
+    </aside>
+
+    <section class="content">
+      <!-- SKYRIUS: Karuselė / įžanga -->
+      <article class="card" id="intro">
+        <h2 class="section-title">Ką būtina žinoti? </h2>
+        <p class="meta">Kiekvienos Temos svarbiausia, bet kartu ir minimali informacija, kurią reikėtų žinoti, mokėti, suprasti :)</p>
+      </article>
+
+      <!-- PAGRINDINIS SKYRIUS: Maldos -->
+      <div id="sections">
+
+        <!-- Example Section: Pagrindinės maldos -->
+        <section class="card" data-section="Pagrindinės maldos" id="section-principales">
+          <h2 class="section-title">Pagrindinės maldos</h2>
+
+          <div class="prayer" data-title="Tėve mūsų">
+            <div class="head">
+              <div>
+                <strong>Tėve mūsų</strong>
+                <div class="meta"></div>
+              </div>
+              <div>
+                <button class="toggle btn">Rodyti</button>
+              </div>
+            </div>
+            <div class="body">
+              <p>„Tėve mūsų, kuris esi danguje!Teesie šventas Tavo vardas,teateinie Tavo karalystė,teesie Tavo valia
+                kaip danguje, taip ir žemėje. Kasdienės mūsų duonos duok mums šiandien ir atleisk mums mūsų kaltes, kaip ir mes atleidžiame savo kaltininkams.
+                Ir neleisk mūsų gundyti, bet gelbėk mus nuo pikto. Amen.“</p>
+              <div class="meta"> Katekizmas : <a href="https://katekizmas.lt/kbks/dalis4/skyrius2/teve-danguje">paaiškinimas apie Tėve mūsų maldą</a></div>
+            </div>
+          </div>
+
+          <div class="prayer" data-title="Sveika, Marija">
+            <div class="head">
+              <div>
+                <strong>Sveika, Marija</strong>
+                <div class="meta">Katalikiška malda</div>
+              </div>
+              <div>
+                <button class="toggle btn">Rodyti</button>
+              </div>
+            </div>
+            <div class="body">
+              <p>Sveika, Marija, malonės pilnoji, Viešpats su tavimi. Tu gailestingumo moteris. Šventoji Marija, Dievo Motina, melskis už mus nusidėjėlius dabar ir mūsų mirties valandą. Amen.</p>
+              <div class="meta">Pastaba: ilgesnė tradicinė versija gali būti pridėta.</div>
+            </div>
+          </div>
+
+          <div class="prayer" data-title="Šlovinimas">
+            <div class="head">
+              <div>
+                <strong>Šlovinimo malda</strong>
+                <div class="meta">Trumpa šlovinimo malda</div>
+              </div>
+              <div>
+                <button class="toggle btn">Rodyti</button>
+              </div>
+            </div>
+            <div class="body">
+              <p>Šloviname Tave, Viešpatie, už Tavo gerumą ir meilę. Amen.</p>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- More sections (placeholders) -->
+        <section class="card" data-section="Rytinės maldos" id="section-morning">
+          <h2 class="section-title">Rytinės maldos</h2>
+          <div class="meta">Čia pridėkite rytinius maldos tekstus arba nuorodas.</div>
+        </section>
+
+        <section class="card" data-section="Vakarines maldos" id="section-evening">
+          <h2 class="section-title">Vakarienės / vakarinės maldos</h2>
+          <div class="meta">Placeholder skyrius — pridėkite turinį.</div>
+        </section>
+
+        <section class="card" data-section="Šventės ir sakramentai" id="section-feasts">
+          <h2 class="section-title">Šventės ir sakramentai</h2>
+          <div class="meta">Specialios maldos šventėms, šv. Mišioms, komunijai ir pan.</div>
+        </section>
+
+      </div>
+
+      <footer>
+        Šablonas paruoštas plėtimui — pridėkite naujus <code>&lt;section data-section="pavadinimas"&gt;</code>.
+      </footer>
+
+    </section>
+  </main>
+
+  <script>
+    // --- Pagrindinė logika: automatinis meniu ---
+    const sectionsRoot = document.getElementById('sections');
+    const menu = document.getElementById('menu');
+
+    function buildMenu(){
+      menu.innerHTML = '';
+      const sectionCards = sectionsRoot.querySelectorAll('section[data-section]');
+      sectionCards.forEach(sec =>{
+        const title = sec.getAttribute('data-section') || sec.querySelector('.section-title')?.innerText || 'Skyrius';
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${sec.id}`;
+        a.innerText = title;
+        a.addEventListener('click', e=>{
+          e.preventDefault();
+          document.getElementById(sec.id).scrollIntoView({behavior:'smooth'});
+          // set active
+          menu.querySelectorAll('a').forEach(x=>x.classList.remove('active'));
+          a.classList.add('active');
+        });
+        li.appendChild(a);
+        menu.appendChild(li);
+      });
+    }
+
+    // accordion toggles
+    function setupAccordions(){
+      document.querySelectorAll('.prayer').forEach(pr =>{
+        const btn = pr.querySelector('.toggle');
+        btn.addEventListener('click', ()=>{
+          const open = pr.classList.toggle('open');
+          btn.innerText = open ? 'Slėpti' : 'Rodyti';
+        });
+      });
+    }
+
+    // initial setup
+    buildMenu(); setupAccordions();
+  </script>
+</body>
+</html>
